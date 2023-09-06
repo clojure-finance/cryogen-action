@@ -18,6 +18,7 @@ runs:
         lein: 2.10.0
     - name: Build site
       run: lein run
+      shell: bash
     - name: Publish to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.4
       with:
