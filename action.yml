@@ -21,7 +21,7 @@ inputs:
     required: false
     default: gh-pages
   single-commit:
-    description: "Have a single commit on the deployment branch instead of maintaining the full history."
+    description: 'Have a single commit on the deployment branch instead of maintaining the full history.'
     required: false
     default: yes
 runs:
@@ -39,6 +39,6 @@ runs:
     - uses: JamesIves/github-pages-deploy-action@4.1.4
       with:
         commit-message: ${{ github.event.head_commit.message }}
-        branch: ${{ input.branch }}
-        single-commit: ${{ input.single-commit }}
+        branch: ${{ inputs.branch }}
+        single-commit: ${{ inputs.single-commit }}
         folder: ${{ inputs.folder }}
