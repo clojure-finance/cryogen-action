@@ -2,27 +2,43 @@ name: 'Cryogen Action'
 description: 'Cryogen CI/CD action for automating deployment.'
 inputs:
   folder:
-    description: 'Folder to be deployed'
+    description: 'The folder to be deployed.'
     required: true
+  java-version:
+    description: 'Java version.'
+    required: false
+    default: '11'
+  java-distribution:
+    description: 'Java distribution.'
+    required: false
+    default: 'liberica'
+  lein-version:
+    description: 'Leiningen version.'
+    required: false
+    default: 2.10.0
+  branch:
+    description: 'The branch you wish to deploy to.'
+    required: false
+    default: gh-pages
+  single-commit:
+    description: "Have a single commit on the deployment branch instead of maintaining the full history."
+    required: false
+    default: yes
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
-    - name: Prepare java
-      uses: actions/setup-java@v3.12.0
+    - uses: actions/setup-java@v3.12.0
       with:
-        distribution: 'temurin'
-        java-version: '11'
-    - name: Install clojure tools
-      uses: DeLaGuardo/setup-clojure@11.0
+        distribution: ${{ inputs.java-distribution }}
+        java-version: ${{ inputs.java-version }}
+    - uses: DeLaGuardo/setup-clojure@11.0
       with:
-        lein: 2.10.0
-    - name: Build site
-      run: lein run
+        lein: ${{ inputs.lein-version }}
+    - run: lein run
       shell: bash
-    - name: Publish to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.4
+    - uses: JamesIves/github-pages-deploy-action@4.1.4
       with:
         commit-message: ${{ github.event.head_commit.message }}
-        branch: gh-pages
-        single-commit: yes
+        branch: ${{ input.branch }}
+        single-commit: ${{ input.single-commit }}
         folder: ${{ inputs.folder }}
