@@ -34,6 +34,13 @@ runs:
     - uses: DeLaGuardo/setup-clojure@11.0
       with:
         lein: ${{ inputs.lein-version }}
+    - run: lein deps
+      shell: bash
+    - uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: cljdeps-${{ hashFiles('project.clj') }}
+        restore-keys: cljdeps-
     - run: lein run
       shell: bash
     - uses: JamesIves/github-pages-deploy-action@4.1.4
