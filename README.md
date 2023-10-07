@@ -35,7 +35,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      # Deploy hexo blog website.
       - name: Deploy
         uses: clojure-finance/cryogen-action@v2
         with:
